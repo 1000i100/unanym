@@ -1,0 +1,128 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: 2em auto;
+    padding: 1em;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+.logo {
+    max-width: 200px;
+    margin: 2em auto;
+    display: block;
+}
+
+.description {
+    max-width: 600px;
+    margin: 2em auto;
+    line-height: 1.6;
+    color: #333;
+}
+
+.btn,
+button,
+.radio-button {
+    display: inline-block;
+    padding: 1.5em;
+    background: #ecf0f1;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+    margin: 10px auto;
+    font-size: 110%;
+}
+
+.btn,
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 0.7em 1.5em;
+    border-radius: 4px;
+}
+
+.btn:hover,
+button:hover {
+    background: #2980b9;
+}
+
+.radio-buttons {
+    display: flex;
+    gap: 1em;
+    margin: 1.5em 0;
+}
+
+.radio-button input {
+    display: none;
+}
+
+.radio-button.active {
+    background: #3498db;
+    color: white;
+}
+
+.vote-options {
+    display: flex;
+    gap: 1em;
+    margin: 1.5em 0;
+}
+
+label,
+p {
+    text-align: left;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: calc(100% - 1em);
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Liens */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        margin: 1em;
+        padding: 0.5em;
+    }
+    .radio-button,
+    button {
+        font-size: 0.9em;
+    }
+}

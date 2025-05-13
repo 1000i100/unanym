@@ -1,0 +1,15 @@
+# Bloquer l'accès aux fichiers privés
+<Files ~ "^_">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Rediriger /index.html vers ./
+RewriteEngine On
+RewriteCond %{THE_REQUEST} ^GET.*index\.html
+RewriteRule ^(.*)index\.html$ ./$1 [R=301,L]
+
+# Réécriture d'URL : ./abc123 → vote.php?id=abc123
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)$ vote.php?id=$1 [L]

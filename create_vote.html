@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Configurer un Vote</title>
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background: #f4f4f4;
+                text-align: center;
+            }
+            .container {
+                max-width: 600px;
+                margin: 2em auto;
+                padding: 1em;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .logo {
+                display: block;
+                margin: auto;
+            }
+            h1,
+            h2 {
+                color: #2c3e50;
+            }
+            label,
+            p {
+                display: block;
+                margin: 1em 0;
+                text-align: left;
+            }
+            input[type="text"],
+            input[type="number"] {
+                width: calc(100% - 1em);
+                padding: 0.5em;
+                margin-top: 0.5em;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            .radio-buttons {
+                display: flex;
+                gap: 1em;
+                margin: 1.5em 0;
+            }
+            .radio-button,
+            button {
+                flex: 1;
+                min-width: 120px;
+                padding: 1.5em;
+                background: #ecf0f1;
+                border-radius: 8px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-weight: bold;
+                position: relative;
+            }
+
+            button {
+                background: #3498db;
+                color: white;
+                border: none;
+                width: 100%;
+                margin: 10px auto;
+                font-size: 110%;
+            }
+            button:hover {
+                background: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <img src="favicon.svg" alt="Logo de l'urne de vote" class="logo" />
+            <h1>Configurer le Vote</h1>
+            <form method="post" action="vote.php">
+                <input type="hidden" name="action" value="create" />
+
+                <label
+                    >Titre : <input type="text" name="title" required
+                /></label>
+                <label
+                    >Choix nécessitant unanimité :
+                    <input type="text" name="choice_unanimous" required
+                /></label>
+                <label
+                    >Choix véto, (adopté au moindre vote pour ce choix) :
+                    <input type="text" name="choice_veto" required
+                /></label>
+
+                <h2>Paramètres</h2>
+                <label
+                    >Nombre de votants (vote clos quand atteint) :
+                    <input type="number" name="total_voters" min="1" required
+                /></label>
+
+                <label
+                    >Délai de contestation (après cloture) :
+                    <select
+                        name="contestation_duration"
+                        id="contestation_duration"
+                    >
+                        <option value="none">Aucun</option>
+                        <option value="5 minutes">5 minutes</option>
+                        <option value="1 hour">1 heure</option>
+                        <option value="1 day">1 jour</option>
+                        <option value="7 days" selected>7 jours</option>
+                        <option value="15 days">15 jours</option>
+                        <option value="1 month">1 mois</option>
+                        <option value="1 year">1 an</option>
+                        <option value="always">Toujours</option>
+                    </select>
+                </label>
+
+                <p>
+                    Afficher les résultats pendant la période de contestation ?
+                </p>
+                <div class="radio-buttons">
+                    <label class="radio-button active">
+                        <input
+                            type="radio"
+                            name="show_results_immediately"
+                            value="0"
+                        />
+                        <span>Non</span>
+                    </label>
+                    <label class="radio-button">
+                        <input
+                            type="radio"
+                            name="show_results_immediately"
+                            value="1"
+                            checked
+                        />
+                        <span>Oui</span>
+                    </label>
+                </div>
+                <button type="submit">Générer l'URL du Vote</button>
+            </form>
+        </div>
+        <script>
+            // Désactive "always" si les résultats ne s'affichent pas immédiatement
+            const durationSelect = document.getElementById(
+                "contestation_duration",
+            );
+            const radios = document.querySelectorAll(
+                'input[name="show_results_immediately"]',
+            );
+
+            function toggleAlwaysOption() {
+                const alwaysOption = Array.from(durationSelect.options).find(
+                    (o) => o.value === "always",
+                );
+                if (alwaysOption) {
+                    const showResults =
+                        document.querySelector(
+                            'input[name="show_results_immediately"]:checked',
+                        ).value === "1";
+                    alwaysOption.disabled = !showResults;
+                    if (!showResults && durationSelect.value === "always") {
+                        durationSelect.value = "7 days"; // Valeur par défaut
+                    }
+                }
+            }
+
+            radios.forEach((radio) =>
+                radio.addEventListener("change", toggleAlwaysOption),
+            );
+            window.addEventListener("DOMContentLoaded", toggleAlwaysOption);
+        </script>
+    </body>
+</html>
