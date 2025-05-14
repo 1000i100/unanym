@@ -3,7 +3,7 @@ if (basename($_SERVER["PHP_SELF"]) === "_handle_vote.php") {
     die("Accès interdit");
 }
 
-include "_db_connect.php";
+include_once "_db_connect.php";
 
 $id = $_POST["vote_id"] ?? "";
 $stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");

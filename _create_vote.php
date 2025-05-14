@@ -3,8 +3,8 @@ if (basename($_SERVER["PHP_SELF"]) === "_create_vote.php") {
     die("Accès interdit");
 }
 
-include "_lib.php";
-include "_db_connect.php";
+include_once "_lib.php";
+include_once "_db_connect.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id = gen_new_id();

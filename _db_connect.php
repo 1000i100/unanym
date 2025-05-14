@@ -3,7 +3,7 @@ if (basename($_SERVER["PHP_SELF"]) === "_db_connect.php") {
     die("Accès interdit");
 }
 
-include "_lib.php";
+include_once "_lib.php";
 
 $dbFile = __DIR__ . "/_vote.db";
 
