@@ -4,75 +4,7 @@
         <meta charset="UTF-8" />
         <title>Configurer un Vote</title>
         <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background: #f4f4f4;
-                text-align: center;
-            }
-            .container {
-                max-width: 600px;
-                margin: 2em auto;
-                padding: 1em;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-            .logo {
-                display: block;
-                margin: auto;
-            }
-            h1,
-            h2 {
-                color: #2c3e50;
-            }
-            label,
-            p {
-                display: block;
-                margin: 1em 0;
-                text-align: left;
-            }
-            input[type="text"],
-            input[type="number"] {
-                width: calc(100% - 1em);
-                padding: 0.5em;
-                margin-top: 0.5em;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-            .radio-buttons {
-                display: flex;
-                gap: 1em;
-                margin: 1.5em 0;
-            }
-            .radio-button,
-            button {
-                flex: 1;
-                min-width: 120px;
-                padding: 1.5em;
-                background: #ecf0f1;
-                border-radius: 8px;
-                text-align: center;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                font-weight: bold;
-                position: relative;
-            }
-
-            button {
-                background: #3498db;
-                color: white;
-                border: none;
-                width: 100%;
-                margin: 10px auto;
-                font-size: 110%;
-            }
-            button:hover {
-                background: #2980b9;
-            }
-        </style>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div class="container">
@@ -121,7 +53,7 @@
                     Afficher les résultats pendant la période de contestation ?
                 </p>
                 <div class="radio-buttons">
-                    <label class="radio-button active">
+                    <label class="radio-button">
                         <input
                             type="radio"
                             name="show_results_immediately"

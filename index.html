@@ -4,61 +4,38 @@
         <meta charset="UTF-8" />
         <title>Unanym : Vote Anonyme à l'unanimité</title>
         <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                text-align: center;
-                padding: 3em;
-                background: #f4f4f4;
-            }
-            .logo {
-                max-width: 200px;
-                margin: 2em auto;
-            }
-            .btn {
-                display: inline-block;
-                padding: 1em 2em;
-                background: #3498db;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: bold;
-            }
-            .description {
-                max-width: 600px;
-                margin: 2em auto;
-                line-height: 1.6;
-                color: #333;
-            }
-        </style>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <img src="favicon.svg" alt="Logo de l'urne de vote" class="logo" />
-        <h1>
-            Unanym <br />
-            Vote anonyme à l'unanimité
-        </h1>
-        <div class="description">
-            <p>Créez un vote à trois issues possible :</p>
-            <ul style="list-style: none; padding: 0">
-                <li>
-                    ✅ <strong>Unanimité</strong> : Tous les votes s'accordent
-                    pour le choix unanime.
-                </li>
-                <li>
-                    ❌ <strong>Véto</strong> : Un seul refus mène au choix véto.
-                </li>
-                <li>
-                    🚫 <strong>Nul</strong> : Une contestation révèle une
-                    anomalie dans le vote.
-                </li>
-            </ul>
-            <p>
-                Le vote est anonyme, sans inscription. Les résultats ne sont
-                visibles qu'une fois tous les votes reçus. Partagez l'URL
-                générée pour collecter les votes.
-            </p>
+        <div class="container">
+            <img src="favicon.svg" alt="Logo de l'urne de vote" class="logo" />
+            <h1>
+                Unanym <br />
+                Vote anonyme à l'unanimité
+            </h1>
+            <div class="description">
+                <p>Créez un vote à trois issues possible :</p>
+                <ul style="list-style: none; padding: 0">
+                    <li>
+                        ✅ <strong>Unanimité</strong> : Tous les votes
+                        s'accordent pour le choix unanime.
+                    </li>
+                    <li>
+                        ❌ <strong>Véto</strong> : Un seul refus mène au choix
+                        véto.
+                    </li>
+                    <li>
+                        🚫 <strong>Nul</strong> : Une contestation révèle une
+                        anomalie dans le vote.
+                    </li>
+                </ul>
+                <p>
+                    Le vote est anonyme, sans inscription. Les résultats ne sont
+                    visibles qu'une fois tous les votes reçus. Partagez l'URL
+                    générée pour collecter les votes.
+                </p>
+            </div>
+            <a href="create_vote.html" class="btn">Créer un Vote</a>
         </div>
-        <a href="create_vote.html" class="btn">Créer un Vote</a>
     </body>
 </html>

@@ -15,10 +15,11 @@ if (!file_exists($dbFile)) {
         choice_veto TEXT,
         total_voters INTEGER,
         votes_received INTEGER DEFAULT 0,
+        veto_received BOOLEAN DEFAULT FALSE,
         status TEXT DEFAULT 'open',
         contestation_duration TEXT DEFAULT '7 days',
         show_results_immediately INTEGER DEFAULT 0,
-        contested INTEGER DEFAULT 0,
+        contested BOOLEAN DEFAULT FALSE,
         new_vote_id TEXT,
         closed_at DATETIME,
         contestation_end DATETIME

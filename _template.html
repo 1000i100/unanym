@@ -2,55 +2,22 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8" />
-        <title data-replace="title">Vote Anonyme</title>
+        <title data-replace="title">Unanym</title>
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div class="container">
-            <h1 data-replace="title">Titre du vote</h1>
-
-            <!-- Section pour vote nul -->
-            <div data-show-if="contested=1" class="contested">
-                <p>Vote nul : erreur ou triche au nombre de votes.</p>
-                <p>
-                    Nouveau vote créé :
-                    <a href="#new_vote_id" data-replace="new_vote_id"
-                        >Accéder au nouveau vote</a
-                    >
-                </p>
-            </div>
-
-            <!-- Section pour vote clos avec résultats -->
-            <div data-show-if="state=closed" class="closed">
-                <div data-show-if="show_results=1" class="result">
-                    <h2>
-                        <span data-replace="is_unanimous"></span>
-                        <span data-replace="result_label"></span>
-                    </h2>
-                </div>
-                <div data-hide-if="show_results=1" class="result-waiting">
-                    <p>
-                        Ce vote est clos. Le résultat sera visible après le
-                        délai de contestation.
-                    </p>
-                    <button type="button" id="contest-button">
-                        Contester : j'aurais dû pouvoir voter
-                    </button>
-                    <p>
-                        Délai de contestation :
-                        <span data-replace="contestation_duration"></span>
-                    </p>
-                </div>
-            </div>
+            <h1 data-replace="title">Unanym</h1>
 
             <!-- Section pour vote en cours -->
             <div data-show-if="state=open" class="open">
-                <p>
-                    <strong data-replace="votes_received"></strong> sur
-                    <strong data-replace="total_voters"></strong> attendus.
+                <p class="vote-progress center">
+                    <strong data-replace="votes_received">2</strong> sur
+                    <strong data-replace="total_voters">8</strong> attendus.
                 </p>
-                <form id="vote-form" data-show-if="state=open">
-                    <label class="radio-button active">
+                <form id="vote-form" method="post" data-show-if="state=open">
+                    <label class="radio-button">
                         <input
                             type="radio"
                             name="choice"
@@ -71,6 +38,69 @@
                     <button type="submit">Valider mon vote</button>
                 </form>
             </div>
+
+            <!-- Section pour vote clos avec résultats -->
+            <div data-show-if="state=closed" class="closed">
+                <div data-show-if="show_results=1" class="result">
+                    <h2 class="unanimous" data-show-if="veto_received=0">
+                        <div class="title">Unanimité atteinte :</div>
+                        <div
+                            data-replace="choice_unanimous"
+                            class="details"
+                        ></div>
+                    </h2>
+                    <h2 class="veto" data-show-if="veto_received=1">
+                        <div class="title">Véto reçu :</div>
+                        <div data-replace="choice_veto" class="details"></div>
+                    </h2>
+                </div>
+                <div data-show-if="show_results=0" class="result">
+                    <h2 class="waiting">
+                        <div class="title">Ce vote est clos.</div>
+                        <div class="details">
+                            Le résultat sera visible à la fin du délai de
+                            contestation.
+                        </div>
+                    </h2>
+                </div>
+                <div data-show-if="contestation_left" class="contest_open">
+                    <p class="center">
+                        Temps restant pour contester :
+                        <span data-replace="contestation_left"
+                            >3 jours, 7 heures et 26 minutes</span
+                        >
+                    </p>
+                    <form method="post">
+                        <button
+                            type="submit"
+                            id="contest-button"
+                            name="contest"
+                            value="true"
+                        >
+                            Contester : j'aurais dû pouvoir voter
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Section pour vote nul -->
+            <div data-show-if="state=contested" class="result">
+                <h2 class="contested">
+                    <div class="title">Vote nul :</div>
+                    <div class="details">
+                        erreur ou triche au nombre de votes.
+                    </div>
+                </h2>
+                <p class="center">
+                    Un nouveau vote remplace celui-ci.
+                    <a
+                        href="#new_vote_id"
+                        data-replace-href="new_vote_id"
+                        class="btn"
+                        >Accéder au vote</a
+                    >
+                </p>
+            </div>
         </div>
         <script>
             // Fonction pour parser le hash de l'URL
@@ -81,15 +111,15 @@
 
             // Paramètres par défaut
             const defaultState = {
-                state: "open",
+                state: "closed",
                 title: "Vote de Test",
                 votes_received: 0,
                 total_voters: 5,
                 choice_unanimous: "Choix A",
                 choice_veto: "Choix B",
-                contestation_duration: "7 days",
-                show_results_immediately: 1,
-                contested: 1,
+                contestation_left: "3 jours, 7 heures et 26 minutes",
+                show_results: 1,
+                veto_received: 0,
                 new_vote_id: "abc123",
             };
 
@@ -97,13 +127,15 @@
             function applyTemplate(data) {
                 document.querySelectorAll("[data-replace]").forEach((el) => {
                     const key = el.getAttribute("data-replace");
-                    el.textContent = data[key] || "";
+                    el.textContent = data[key] !== undefined ? data[key] : "";
                 });
 
                 document.querySelectorAll("[data-show-if]").forEach((el) => {
                     const condition = el.getAttribute("data-show-if");
                     const [key, value] = condition.split("=");
-                    el.style.display = data[key] === value ? "" : "none";
+                    if (value)
+                        el.style.display = data[key] == value ? "" : "none";
+                    else el.style.display = data[key] ? "" : "none";
                 });
 
                 document.querySelectorAll("[data-hide-if]").forEach((el) => {
@@ -122,29 +154,6 @@
                 }
             }
 
-            // Calcul de la date de fin de contestation
-            function calculateContestationEnd(duration) {
-                const now = new Date();
-                switch (duration) {
-                    case "5 minutes":
-                        return new Date(now.getTime() + 5 * 60000);
-                    case "1 hour":
-                        return new Date(now.getTime() + 60 * 60000);
-                    case "1 day":
-                        return new Date(now.getTime() + 24 * 3600000);
-                    case "7 days":
-                        return new Date(now.getTime() + 7 * 86400000);
-                    case "15 days":
-                        return new Date(now.getTime() + 15 * 86400000);
-                    case "1 month":
-                        return new Date(now.setMonth(now.getMonth() + 1));
-                    case "1 year":
-                        return new Date(now.setFullYear(now.getFullYear() + 1));
-                    default:
-                        return null;
-                }
-            }
-
             // Initialisation
             window.addEventListener("load", () => {
                 const params = getHashParams();
@@ -152,26 +161,6 @@
                     ...defaultState,
                     ...params,
                 };
-
-                // Simule contestation_end
-                if (
-                    state.state === "closed" &&
-                    !state.show_results_immediately &&
-                    state.contestation_duration !== "none"
-                ) {
-                    const contestationEnd = calculateContestationEnd(
-                        state.contestation_duration,
-                    );
-                    state.contestation_end = contestationEnd
-                        ? contestationEnd.toISOString()
-                        : null;
-                    state.can_contest = contestationEnd
-                        ? new Date() < contestationEnd
-                        : false;
-                    state.show_results =
-                        state.show_results_immediately == 1 ||
-                        !state.can_contest;
-                }
 
                 // Simulation de isUnanimous
                 state.is_unanimous =

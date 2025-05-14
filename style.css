@@ -43,11 +43,13 @@ button,
     background: #ecf0f1;
     color: #2c3e50;
     text-decoration: none;
+    border: none;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    box-sizing: border-box;
     width: 100%;
     margin: 10px auto;
     font-size: 110%;
@@ -57,10 +59,6 @@ button,
 button {
     background: #3498db;
     color: white;
-    border: none;
-    width: 100%;
-    padding: 0.7em 1.5em;
-    border-radius: 4px;
 }
 
 .btn:hover,
@@ -74,15 +72,9 @@ button:hover {
     margin: 1.5em 0;
 }
 
-.radio-button input {
-    display: none;
+.center {
+    text-align: center;
 }
-
-.radio-button.active {
-    background: #3498db;
-    color: white;
-}
-
 .vote-options {
     display: flex;
     gap: 1em;
@@ -98,21 +90,69 @@ input[type="text"],
 input[type="number"],
 select,
 textarea {
-    width: calc(100% - 1em);
-    padding: 0.5em;
+    width: calc(100% - 2em);
+    padding: 1em;
     margin-top: 0.5em;
+    margin-bottom: 1em;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
-/* Liens */
-a {
-    color: #3498db;
-    text-decoration: none;
+select {
+    width: 100%;
 }
 
-a:hover {
-    text-decoration: underline;
+/* Classes de base pour les résultats */
+.result h2 {
+    padding: 2em;
+    border-radius: 8px;
+}
+.result .details {
+    font-size: 0.8em;
+}
+.result h2 .title {
+    padding-left: 2em;
+    padding-bottom: 1em;
+    margin: auto;
+    position: relative;
+    display: inline-block;
+}
+
+.result .title::before {
+    position: absolute;
+    left: 0;
+    top: -0.2em;
+    font-size: 1.5em;
+    content: attr(data-icon);
+}
+
+/* Styles par statut */
+.unanimous {
+    background: #dff0d8; /* Vert pâle */
+}
+.unanimous .title::before {
+    content: "✅";
+}
+
+.veto {
+    background: #ffccbc; /* Orange pêche */
+}
+.veto .title::before {
+    content: "❗"; /* ❌ */
+}
+
+.waiting {
+    background: #e3f2fd; /* Bleu pâle */
+}
+.waiting .title::before {
+    content: "🕒"; /*⏳⏱🕒*/
+}
+
+.contested {
+    background: #ef9a9a;
+    color: #5d4037;
+}
+.contested .title::before {
+    content: "🚨"; /* 🚫 */
 }
 
 /* Responsive */
