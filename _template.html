@@ -64,11 +64,14 @@
                     </h2>
                 </div>
                 <div data-show-if="contestation_left" class="contest_open">
-                    <p class="center">
+                    <p
+                        data-show-if="contestation_left"
+                        class="contest_open center"
+                        data-replace="contestation_left"
+                        data-replace-title="contestation_end_human"
+                    >
                         Temps restant pour contester :
-                        <span data-replace="contestation_left"
-                            >3 jours, 7 heures et 26 minutes</span
-                        >
+                        <span data-replace="contestation_left"></span>
                     </p>
                     <form method="post">
                         <button
@@ -102,7 +105,7 @@
                 </p>
             </div>
         </div>
-        <script>
+        <script data-show-if="never">
             // Fonction pour parser le hash de l'URL
             function getHashParams() {
                 const hash = location.hash.replace(/^#/, "");

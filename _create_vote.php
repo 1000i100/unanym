@@ -1,27 +1,57 @@
 <?php
-if (basename($_SERVER['PHP_SELF']) === '_create_vote.php') die('Accès interdit');
+if (basename($_SERVER["PHP_SELF"]) === "_create_vote.php") {
+    die("Accès interdit");
+}
 
-include '_db_connect.php';
+include "_lib.php";
+include "_db_connect.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = bin2hex(random_bytes(10));
-    $title = $_POST['title'];
-    $unanimous = $_POST['choice_unanimous'];
-    $veto = $_POST['choice_veto'];
-    $total = (int)$_POST['total_voters'];
-    $contestation = $_POST['contestation_duration'];
-    $show_results = isset($_POST['show_results_immediately']) ? 1 : 0;
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $id = gen_new_id();
+    $title = $_POST["title"];
+    $unanimous = $_POST["choice_unanimous"];
+    $veto = $_POST["choice_veto"];
+    $total = (int) $_POST["total_voters"];
+    $contestation = $_POST["contestation_duration"];
+    $show_results = isset($_POST["show_results_immediately"]) ? 1 : 0;
 
-    // Si les résultats ne s'affichent pas immédiatement, bloque "always"
-    if ($contestation === 'always' && !$show_results) {
-        die("Erreur : La contestation infinie n'est autorisée que si les résultats s'affichent dès le dernier vote reçu.");
+    // Blocage de "always" si résultats non immédiats
+    if ($contestation === "always" && !$show_results) {
+        die(
+            "Erreur : La contestation infinie n'est autorisée que si les résultats s'affichent dès le dernier vote reçu."
+        );
     }
 
-    $stmt = $pdo->prepare("INSERT INTO votes
-        (id, title, choice_unanimous, choice_veto, total_voters, contestation_duration, show_results_immediately)
-        VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$id, $title, $unanimous, $veto, $total, $contestation, $show_results]);
+    // Utilise VOTE_SCHEMA pour générer les champs dynamiquement
+    $columns = array_keys(VOTE_SCHEMA);
+    $placeholders = array_map(fn($col) => "?", $columns);
+
+    $stmt = $pdo->prepare(
+        "INSERT INTO votes (" .
+            implode(", ", $columns) .
+            ")
+         VALUES (" .
+            implode(", ", $placeholders) .
+            ")"
+    );
+
+    $stmt->execute([
+        $id,
+        $title,
+        $unanimous,
+        $veto,
+        $total,
+        $contestation,
+        $show_results,
+        0, // votes_received
+        0, // veto_received
+        "open", // status
+        0, // contested
+        null, // new_vote_id
+        null, // closed_at
+        null, // contestation_end
+    ]);
 
     header("Location: ./$id");
-    exit;
+    exit();
 }

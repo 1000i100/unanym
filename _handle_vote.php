@@ -21,6 +21,12 @@ $stmt = $pdo->prepare(
 );
 $stmt->execute([$id]);
 
+// Si le vote est "veto", marque-le dans la base
+if ($_POST["choice"] === "veto") {
+    $stmt = $pdo->prepare("UPDATE votes SET veto_received = 1 WHERE id = ?");
+}
+$stmt->execute([$id]);
+
 // Si ce n'est pas le dernier vote, redirige vers vote_received.html
 if ($vote["votes_received"] + 1 < $vote["total_voters"]) {
     header("Location: ./thanks.html");

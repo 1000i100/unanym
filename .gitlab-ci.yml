@@ -1,0 +1,19 @@
+stages:
+  - deploy
+
+deploy_to_server:
+  image: alpine:latest
+  stage: deploy
+  tags:
+    - docker-runner
+  before_script:
+    - apk add --no-cache openssh sshpass rsync
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+  script:
+    - rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+      --exclude='.git*' \
+      --exclude='*.yml' \
+      ./ gammanu@gamma.nu:/home/gammanu/unanym/

@@ -15,150 +15,76 @@ if (!$vote) {
     die("Vote non trouvé");
 }
 
-if ($vote["contestation_end"]) {
+// Prépare les données à injecter
+$data = [
+    "title" => htmlspecialchars($vote["title"]),
+    "votes_received" => $vote["votes_received"],
+    "total_voters" => $vote["total_voters"],
+    "choice_unanimous" => htmlspecialchars($vote["choice_unanimous"]),
+    "choice_veto" => htmlspecialchars($vote["choice_veto"]),
+    "new_vote_id" => $vote["new_vote_id"] ?: "",
+    "contestation_duration" => htmlspecialchars($vote["contestation_duration"]),
+    "veto_received" => $vote["veto_received"],
+    "show_results_immediately" => $vote["show_results_immediately"],
+];
+
+// status open si votes_received < total_voters
+// TODO: Implement vote status check
+
+// status contested si new_vote_id et non vide.
+// TODO : status contested
+
+// status closed sinon
+// et show_results en fonction de show_results_immediately
+// et veto si veto_received != 0, unanimous sinon
+// TODO : Implement les commentaires
+
+// Possibilité de contestation
+// TODO : clean following code to only keep what's needed... and use IntlDateFormatter
+$data["can_contest"] =
+    $contestation_end && new DateTime() < new DateTime($contestation_end);
+
+// Calcul de la date de fin de contestation
+if ($vote["contestation_duration"] === "always") {
+    $data["contestation_left"] = "∞";
+    $data["contestation_end_human"] = "Contestation infinie";
+} elseif ($vote["contestation_end"]) {
+    // utilise intl pour formater le temps restant et la date de fin de manière localisé
+    // FIXME: Implement date formatting using IntlDateFormatter
     try {
         $date = new DateTime($vote["contestation_end"]);
-        $contestation_end = $date->format("c");
+        $data["contestation_left"] = $interval->format(
+            "%R%a jours, %h heures et %i minutes"
+        );
+        $data["contestation_end_human"] = $date->format("d/m/Y à H:i");
     } catch (Exception $e) {
-        $contestation_end = null;
+        $data["contestation_left"] = "";
     }
-} else {
-    $contestation_end = null;
 }
-$can_contest =
-    $contestation_end && new DateTime() < new DateTime($contestation_end);
-$show_results =
-    $vote["show_results_immediately"] ||
-    (!$can_contest && $contestation_end !== null);
-?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title><?= htmlspecialchars($vote["title"]) ?></title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 2em auto;
-            padding: 1em;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .result {
-            text-align: center;
-            padding: 2em;
-            background: #dff0d8;
-            border-radius: 8px;
-        }
-        .radio-buttons {
-            display: flex;
-            gap: 1em;
-            margin: 1.5em 0;
-        }
-        .radio-button {
-            flex: 1;
-            min-width: 120px;
-            padding: 1em;
-            background: #ecf0f1;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-        .radio-button input {
-            display: none;
-        }
-        .radio-button.active {
-            background: #3498db;
-            color: white;
-        }
-        button {
-            background: #3498db;
-            color: white;
-            padding: 0.7em 1.5em;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1><?= htmlspecialchars($vote["title"]) ?></h1>
+// Gestion du délai restant pour contestation
+if (!$data["show_results"] && $vote["status"] === "closed") {
+    $now = new DateTime();
+    $end = new DateTime($vote["contestation_end"]);
+    $interval = $now->diff($end);
+    $data["contestation_left"] = $interval->format(
+        "%R%a jours, %h heures et %i minutes"
+    );
+} else {
+    $data["contestation_left"] = "";
+}
 
-        <?php if ($vote["contested"]): ?>
-            <p>Vote nul : erreur ou triche au nombre de votes.</p>
-            <p>Nouveau vote créé : <a href="<?= $vote[
-                "new_vote_id"
-            ] ?>">Accéder au nouveau vote</a></p>
+// Chargement du template HTML
+$template = file_get_contents(__DIR__ . "/_template.html");
 
-        <?php elseif ($vote["status"] === "closed"): ?>
-            <?php if ($show_results): ?>
-                <?php $isUnanimous =
-                    $vote["votes_received"] === $vote["total_voters"]; ?>
-                <div class="result">
-                    <?= $isUnanimous
-                        ? "<h2>✅ " .
-                            htmlspecialchars($vote["choice_unanimous"]) .
-                            "</h2>"
-                        : "<h2>❌ " .
-                            htmlspecialchars($vote["choice_veto"]) .
-                            "</h2>" ?>
-                </div>
-            <?php else: ?>
-                <p>Ce vote est clos. Le résultat sera visible après le délai de contestation.</p>
-                <form method="post">
-                    <input type="hidden" name="action" value="contest">
-                    <input type="hidden" name="vote_id" value="<?= $vote[
-                        "id"
-                    ] ?>">
-                    <button type="submit">Contester : j'aurais dû pouvoir voter</button>
-                </form>
-                <p>Délai de contestation : <?= htmlspecialchars(
-                    $vote["contestation_duration"]
-                ) ?></p>
-            <?php endif; ?>
+// Création du DOM
+$dom = new DOMDocument();
+$dom->loadHTML($template, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+$xpath = new DOMXPath($dom);
 
-        <?php else: ?>
-            <p><?= $vote["votes_received"] ?> vote(s) sur <?= $vote[
-     "total_voters"
- ] ?> attendus.</p>
-            <form method="post">
-                <input type="hidden" name="action" value="vote">
-                <input type="hidden" name="vote_id" value="<?= $vote["id"] ?>">
-                <div class="vote-options">
-                    <label class="radio-button active">
-                        <input type="radio" name="choice" value="unanimous" required>
-                        <span><?= htmlspecialchars(
-                            $vote["choice_unanimous"]
-                        ) ?></span>
-                    </label>
-                    <label class="radio-button">
-                        <input type="radio" name="choice" value="veto" required>
-                        <span><?= htmlspecialchars(
-                            $vote["choice_veto"]
-                        ) ?></span>
-                    </label>
-                </div>
-                <button type="submit">Valider mon vote</button>
-            </form>
-        <?php endif; ?>
-    </div>
-</body>
-</html>
+// Gestion des conditions data-show-if
+
+// Remplacement des attributs data-replace, data-replace-href et data-replace-title
+
+// 8. Affichage final
+echo $dom->saveHTML();
+exit();
