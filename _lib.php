@@ -44,7 +44,7 @@ define("VOTE_SCHEMA", [
     "show_results_immediately" => "INTEGER DEFAULT 0",
     "votes_received" => "INTEGER DEFAULT 0",
     "veto_received" => "BOOLEAN DEFAULT FALSE",
-    "status" => "enum('open', 'closed', 'contested') DEFAULT 'open'",
+    "status" => "TEXT DEFAULT 'open'", // enum('open', 'closed', 'contested')
     "new_vote_id" => "TEXT",
     "closed_at" => "DATETIME",
     "contestation_end" => "DATETIME",

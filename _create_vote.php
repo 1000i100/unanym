@@ -46,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         0, // votes_received
         0, // veto_received
         "open", // status
-        0, // contested
         null, // new_vote_id
         null, // closed_at
         null, // contestation_end
