@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $veto = $_POST["choice_veto"];
     $total = (int) $_POST["total_voters"];
     $contestation = $_POST["contestation_duration"];
-    $show_results = isset($_POST["show_results_immediately"]) ? 1 : 0;
+    $show_results = $_POST["show_results_immediately"];
 
     // Blocage de "always" si résultats non immédiats
     if ($contestation === "always" && !$show_results) {

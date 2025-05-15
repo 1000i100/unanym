@@ -95,24 +95,24 @@ if ($vote["contestation_duration"] === "always") {
     $data["contestation_end_human"] = "";
 }
 
-// Détermine si les résultats doivent être affichés et si la contestation est possible
-$can_contest =
-    $vote["contestation_duration"] !== "none" && $vote["status"] === "closed";
-$show_results = $vote["show_results_immediately"] || !$can_contest;
-$data["show_results"] = $show_results ? "1" : "0";
 
 // Déterminer si la contestation est encore possible
-$can_still_contest = false;
+$can_contest = false;
 if ($vote["status"] === "closed" && $vote["contestation_duration"] !== "none") {
     if ($vote["contestation_duration"] === "always") {
-        $can_still_contest = true;
+        $can_contest = true;
     } elseif ($vote["contestation_end"]) {
         $now = now();
         $end_time = parse_date_from_db($vote["contestation_end"]);
-        $can_still_contest = $now < $end_time;
+        $can_contest = $now < $end_time;
     }
 }
-$data["can_contest"] = $can_still_contest ? "1" : "0";
+$data["can_contest"] = $can_contest ? "1" : "0";
+
+// Détermine si les résultats doivent être affichés et si la contestation est possible
+$show_results = $vote["show_results_immediately"] || !$can_contest;
+$data["show_results"] = $show_results ? "1" : "0";
+
 
 // Chargement du template
 $template = file_get_contents(__DIR__ . "/_template.html");
