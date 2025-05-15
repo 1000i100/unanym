@@ -11,12 +11,13 @@
             <h1 data-replace="title">Unanym</h1>
 
             <!-- Section pour vote en cours -->
-            <div data-show-if="state=open" class="open">
+            <div data-show-if="status=open" class="open">
                 <p class="vote-progress center">
                     <strong data-replace="votes_received">2</strong> sur
                     <strong data-replace="total_voters">8</strong> attendus.
                 </p>
-                <form id="vote-form" method="post" data-show-if="state=open">
+                <form id="vote-form" method="post" data-show-if="status=open">
+                    <input type="hidden" name="action" value="vote" />
                     <label class="radio-button">
                         <input
                             type="radio"
@@ -40,7 +41,7 @@
             </div>
 
             <!-- Section pour vote clos avec résultats -->
-            <div data-show-if="state=closed" class="closed">
+            <div data-show-if="status=closed" class="closed">
                 <div data-show-if="show_results=1" class="result">
                     <h2 class="unanimous" data-show-if="veto_received=0">
                         <div class="title">Unanimité atteinte :</div>
@@ -74,6 +75,7 @@
                         <span data-replace="contestation_left"></span>
                     </p>
                     <form method="post">
+                        <input type="hidden" name="action" value="contest" />
                         <button
                             type="submit"
                             id="contest-button"
@@ -87,7 +89,7 @@
             </div>
 
             <!-- Section pour vote nul -->
-            <div data-show-if="state=contested" class="result">
+            <div data-show-if="status=contested" class="result">
                 <h2 class="contested">
                     <div class="title">Vote nul :</div>
                     <div class="details">
@@ -114,7 +116,7 @@
 
             // Paramètres par défaut
             const defaultState = {
-                state: "closed",
+                status: "closed",
                 title: "Vote de Test",
                 votes_received: 0,
                 total_voters: 5,

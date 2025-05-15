@@ -6,7 +6,7 @@ if (basename($_SERVER["PHP_SELF"]) === "_contest.php") {
 include_once "_lib.php";
 include_once "_db_connect.php";
 
-$id = $_POST["vote_id"] ?? "";
+$id = $_GET["id"] ?? "";
 $stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");
 $stmt->execute([$id]);
 $vote = $stmt->fetch();

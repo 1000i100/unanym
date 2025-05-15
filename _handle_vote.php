@@ -5,7 +5,7 @@ if (basename($_SERVER["PHP_SELF"]) === "_handle_vote.php") {
 
 include_once "_db_connect.php";
 
-$id = $_POST["vote_id"] ?? "";
+$id = $_GET["id"] ?? "";
 $stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");
 $stmt->execute([$id]);
 $vote = $stmt->fetch();
@@ -24,11 +24,16 @@ $stmt->execute([$id]);
 // Si le vote est "veto", marque-le dans la base
 if ($_POST["choice"] === "veto") {
     $stmt = $pdo->prepare("UPDATE votes SET veto_received = 1 WHERE id = ?");
+    $stmt->execute([$id]);
 }
+
+// Récupère le vote avec son compteur mis à jour
+$stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");
 $stmt->execute([$id]);
+$updated_vote = $stmt->fetch();
 
 // Si ce n'est pas le dernier vote, redirige vers vote_received.html
-if ($vote["votes_received"] + 1 < $vote["total_voters"]) {
+if ($updated_vote["votes_received"] < $updated_vote["total_voters"]) {
     header("Location: ./thanks.html");
     exit();
 }

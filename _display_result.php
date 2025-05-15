@@ -21,12 +21,14 @@ $data = [
     "title" => htmlspecialchars($vote["title"]),
     "votes_received" => $vote["votes_received"],
     "total_voters" => $vote["total_voters"],
+    "status" => $vote["status"],
     "choice_unanimous" => htmlspecialchars($vote["choice_unanimous"]),
     "choice_veto" => htmlspecialchars($vote["choice_veto"]),
     "new_vote_id" => $vote["new_vote_id"] ?: "",
     "contestation_duration" => $vote["contestation_duration"],
     "show_results_immediately" => $vote["show_results_immediately"],
     "veto_received" => $vote["veto_received"] ? 1 : 0,
+    "id" => $id,
 ];
 
 // Calcul des états de contestation
