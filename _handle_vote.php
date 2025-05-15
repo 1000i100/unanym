@@ -45,35 +45,43 @@ $stmt = $pdo->prepare(
 $stmt->execute([$id]);
 
 if ($vote["contestation_duration"] === "none") {
-    $stmt = $pdo->prepare(
-        "UPDATE votes SET contestation_end = datetime('now') WHERE id = ?"
-    );
-    $stmt->execute([$id]);
+    // Pas de contestation, mettre fin immédiatement
+    $now = now();
+    $stmt = $pdo->prepare("UPDATE votes SET contestation_end = ? WHERE id = ?");
+    $stmt->execute([$now->format("Y-m-d H:i:s"), $id]);
 } elseif ($vote["contestation_duration"] !== "always") {
-    match ($vote["contestation_duration"]) {
-        "5 minutes" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+5 minutes') WHERE id = ?"
-        )),
-        "1 hour" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+1 hour') WHERE id = ?"
-        )),
-        "1 day" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+1 day') WHERE id = ?"
-        )),
-        "7 days" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+7 days') WHERE id = ?"
-        )),
-        "15 days" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+15 days') WHERE id = ?"
-        )),
-        "1 month" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+1 month') WHERE id = ?"
-        )),
-        "1 year" => ($stmt = $pdo->prepare(
-            "UPDATE votes SET contestation_end = datetime('now', '+1 year') WHERE id = ?"
-        )),
-    };
-    $stmt->execute([$id]);
+    // Calculer la date de fin de contestation avec PHP
+    $now = now();
+    $endDate = clone $now;
+
+    // Déterminer la durée à ajouter
+    switch ($vote["contestation_duration"]) {
+        case "5 minutes":
+            $endDate->add(new DateInterval("PT5M"));
+            break;
+        case "1 hour":
+            $endDate->add(new DateInterval("PT1H"));
+            break;
+        case "1 day":
+            $endDate->add(new DateInterval("P1D"));
+            break;
+        case "7 days":
+            $endDate->add(new DateInterval("P7D"));
+            break;
+        case "15 days":
+            $endDate->add(new DateInterval("P15D"));
+            break;
+        case "1 month":
+            $endDate->add(new DateInterval("P1M"));
+            break;
+        case "1 year":
+            $endDate->add(new DateInterval("P1Y"));
+            break;
+    }
+
+    // Mettre à jour la date de fin de contestation
+    $stmt = $pdo->prepare("UPDATE votes SET contestation_end = ? WHERE id = ?");
+    $stmt->execute([$endDate->format("Y-m-d H:i:s"), $id]);
 }
 
 header("Location: ./$id");

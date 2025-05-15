@@ -32,7 +32,10 @@ function gen_new_id()
 {
     return base58_encode(random_bytes(6));
 }
-
+function now()
+{
+    return new DateTime("now", new DateTimeZone("UTC"));
+}
 // Schéma de la base de données
 define("VOTE_SCHEMA", [
     "id" => "TEXT PRIMARY KEY",

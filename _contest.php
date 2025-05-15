@@ -23,15 +23,32 @@ $columns = [];
 $values = [];
 $params = [];
 
+// Champs à conserver du vote original
+$fieldsToKeep = [
+    "title",
+    "choice_unanimous",
+    "choice_veto",
+    "total_voters",
+    "contestation_duration",
+    "show_results_immediately",
+];
+
 foreach (array_keys(VOTE_SCHEMA) as $field) {
+    $columns[] = $field;
+    $values[] = "?";
+
     if ($field === "id") {
-        $columns[] = $field;
-        $values[] = "?";
         $params[] = $new_id;
+    } elseif (in_array($field, $fieldsToKeep)) {
+        $params[] = $vote[$field]; // Garder les champs importants
+    } elseif ($field === "status") {
+        $params[] = "open"; // Nouveau vote toujours ouvert
+    } elseif ($field === "votes_received") {
+        $params[] = 0; // Réinitialiser les votes
+    } elseif ($field === "veto_received") {
+        $params[] = false; // Réinitialiser le véto
     } else {
-        $columns[] = $field;
-        $values[] = "?";
-        $params[] = $vote[$field];
+        $params[] = null; // Pour tout autre champ, mettre à null
     }
 }
 
