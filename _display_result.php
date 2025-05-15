@@ -6,6 +6,9 @@ if (basename($_SERVER["PHP_SELF"]) === "_display_result.php") {
 include_once "_lib.php";
 include_once "_db_connect.php";
 
+// S'assurer que le fuseau horaire par défaut est UTC pour toutes les opérations de date
+date_default_timezone_set('UTC');
+
 $id = $_GET["id"] ?? "";
 $stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");
 $stmt->execute([$id]);
@@ -41,7 +44,7 @@ if ($vote["contestation_duration"] === "always") {
     $data["contestation_end_human"] = "Pas de contestation";
 } elseif ($vote["contestation_end"]) {
     try {
-        $contestation_end = new DateTime($vote["contestation_end"]);
+        $contestation_end = parse_date_from_db($vote["contestation_end"]);
         $now = now();
         $interval = $now->diff($contestation_end);
 
@@ -76,7 +79,8 @@ if ($vote["contestation_duration"] === "always") {
         $formatter = new \IntlDateFormatter(
             "fr_FR",
             \IntlDateFormatter::SHORT,
-            \IntlDateFormatter::SHORT
+            \IntlDateFormatter::SHORT,
+            new DateTimeZone(date_default_timezone_get())
         );
         $data["contestation_end_human"] =
             $vote["contestation_duration"] === "always"
@@ -104,7 +108,7 @@ if ($vote["status"] === "closed" && $vote["contestation_duration"] !== "none") {
         $can_still_contest = true;
     } elseif ($vote["contestation_end"]) {
         $now = now();
-        $end_time = new DateTime($vote["contestation_end"]);
+        $end_time = parse_date_from_db($vote["contestation_end"]);
         $can_still_contest = $now < $end_time;
     }
 }

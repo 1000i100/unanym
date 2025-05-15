@@ -36,6 +36,38 @@ function now()
 {
     return new DateTime("now", new DateTimeZone("UTC"));
 }
+
+/**
+ * Format date to ISO 8601 with UTC timezone marker
+ */
+function format_date_for_db($dateTime)
+{
+    if (!($dateTime instanceof DateTime)) {
+        return null;
+    }
+    
+    // Ensure the date is in UTC
+    if ($dateTime->getTimezone()->getName() !== 'UTC') {
+        $dateTime->setTimezone(new DateTimeZone('UTC'));
+    }
+    
+    // Format with explicit Z to indicate UTC
+    return $dateTime->format('Y-m-d\TH:i:s\Z');
+}
+
+/**
+ * Parse a date from DB ensuring it's interpreted as UTC
+ */
+function parse_date_from_db($dateString)
+{
+    if (empty($dateString)) {
+        return null;
+    }
+    
+    // Always interpret dates as UTC
+    $date = new DateTime($dateString, new DateTimeZone('UTC'));
+    return $date;
+}
 // Schéma de la base de données
 define("VOTE_SCHEMA", [
     "id" => "TEXT PRIMARY KEY",

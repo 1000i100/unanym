@@ -4,6 +4,7 @@ if (basename($_SERVER["PHP_SELF"]) === "_handle_vote.php") {
 }
 
 include_once "_db_connect.php";
+include_once "_lib.php";
 
 $id = $_GET["id"] ?? "";
 $stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");
@@ -48,7 +49,7 @@ if ($vote["contestation_duration"] === "none") {
     // Pas de contestation, mettre fin immédiatement
     $now = now();
     $stmt = $pdo->prepare("UPDATE votes SET contestation_end = ? WHERE id = ?");
-    $stmt->execute([$now->format("Y-m-d H:i:s"), $id]);
+    $stmt->execute([format_date_for_db($now), $id]);
 } elseif ($vote["contestation_duration"] !== "always") {
     // Calculer la date de fin de contestation avec PHP
     $now = now();
@@ -81,7 +82,7 @@ if ($vote["contestation_duration"] === "none") {
 
     // Mettre à jour la date de fin de contestation
     $stmt = $pdo->prepare("UPDATE votes SET contestation_end = ? WHERE id = ?");
-    $stmt->execute([$endDate->format("Y-m-d H:i:s"), $id]);
+    $stmt->execute([format_date_for_db($endDate), $id]);
 }
 
 header("Location: ./$id");
