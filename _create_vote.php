@@ -50,6 +50,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         null, // closed_at
         null, // contestation_end
     ]);
+    
+    // Supprime test_setup.php s'il existe (pour des raisons de sécurité en production)
+    if (file_exists(__DIR__ . "/test_setup.php")) {
+        @unlink(__DIR__ . "/test_setup.php");
+    }
 
     header("Location: ./$id");
     exit();
