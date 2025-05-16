@@ -67,5 +67,5 @@ $pdo->exec(
     "UPDATE votes SET status = 'contested', new_vote_id = '$new_id' WHERE id = '$id'"
 );
 
-header("Location: ./$id");
+header("Location: " . get_vote_url($id));
 exit();

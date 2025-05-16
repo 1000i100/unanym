@@ -56,6 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         @unlink(__DIR__ . "/test_setup.php");
     }
 
-    header("Location: ./$id");
+    header("Location: " . get_vote_url($id));
     exit();
 }

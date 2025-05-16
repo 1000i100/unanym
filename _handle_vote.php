@@ -85,5 +85,5 @@ if ($vote["contestation_duration"] === "none") {
     $stmt->execute([format_date_for_db($endDate), $id]);
 }
 
-header("Location: ./$id");
+header("Location: " . get_vote_url($id));
 exit();

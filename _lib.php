@@ -1,6 +1,25 @@
 <?php
 // _lib.php
 
+// Inclusion du fichier de configuration
+include_once "_config.php";
+
+/**
+ * Génère une URL pour un vote basée sur la configuration de réécriture d'URL
+ *
+ * @param string $id L'identifiant du vote
+ * @return string L'URL formatée
+ */
+function get_vote_url($id)
+{
+    global $config;
+
+    if ($config["url_rewriting"]) {
+        return "./{$id}";
+    } else {
+        return "./vote.php?id={$id}";
+    }
+}
 // Fonction Base58 (nécessite bcmath)
 function base58_encode($input)
 {
@@ -45,14 +64,14 @@ function format_date_for_db($dateTime)
     if (!($dateTime instanceof DateTime)) {
         return null;
     }
-    
+
     // Ensure the date is in UTC
-    if ($dateTime->getTimezone()->getName() !== 'UTC') {
-        $dateTime->setTimezone(new DateTimeZone('UTC'));
+    if ($dateTime->getTimezone()->getName() !== "UTC") {
+        $dateTime->setTimezone(new DateTimeZone("UTC"));
     }
-    
+
     // Format with explicit Z to indicate UTC
-    return $dateTime->format('Y-m-d\TH:i:s\Z');
+    return $dateTime->format("Y-m-d\TH:i:s\Z");
 }
 
 /**
@@ -63,9 +82,9 @@ function parse_date_from_db($dateString)
     if (empty($dateString)) {
         return null;
     }
-    
+
     // Always interpret dates as UTC
-    $date = new DateTime($dateString, new DateTimeZone('UTC'));
+    $date = new DateTime($dateString, new DateTimeZone("UTC"));
     return $date;
 }
 // Schéma de la base de données
