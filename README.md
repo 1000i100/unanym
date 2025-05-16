@@ -52,7 +52,7 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
 
 4. Vérifiez votre installation en exécutant le script de test :
    ```
-   php test_setup.php
+   php setup.php
    ```
    Ce script vérifiera :
    - La compatibilité de votre version de PHP
@@ -105,7 +105,7 @@ Le projet est basé sur une architecture PHP simple :
 - Base de données SQLite pour le stockage des données
 - Gestion dynamique des états de vote (ouvert, fermé, contesté)
 - Calcul précis des périodes de contestation en UTC
-- Script de vérification `test_setup.php` pour diagnostiquer les problèmes d'installation
+- Script de vérification `setup.php` pour diagnostiquer les problèmes d'installation
 
 ## Sécurité
 
@@ -113,7 +113,7 @@ Le projet est basé sur une architecture PHP simple :
 - Utilisation de requêtes préparées pour toutes les interactions avec la base de données
 - Échappement des données utilisateur pour prévenir les attaques XSS
 - Pas de stockage d'informations personnelles
-- Suppression automatique de test_setup.php à la première utilisation réussie
+- Suppression automatique de `setup.php` à la première utilisation réussie
 
 ## Licence
 

@@ -206,8 +206,6 @@ if (extension_loaded("curl")) {
         $header = substr($response, 0, $headerSize);
         $body = substr($response, $headerSize);
 
-        echo "Code HTTP reçu: " . $httpCode . $newline;
-
         // Vérifie si la réponse est "Vote non trouvé" (404) ce qui indiquerait une réécriture fonctionnelle
         $urlRewriteTest =
             $httpCode == 404 && strpos($body, "Vote non trouvé") !== false;
@@ -233,21 +231,40 @@ echo "Réécriture d'URL fonctionnelle ? ";
 if ($urlRewriteTest === true) {
     echo styleText("✅ Oui", "green") . $newline;
 
-    // Mise à jour automatique du fichier _config.php pour activer la réécriture d'URL
+    // Vérification et mise à jour du fichier _config.php pour la réécriture d'URL
     $configFile = __DIR__ . "/_config.php";
-    if (file_exists($configFile) && is_writable($configFile)) {
+    if (file_exists($configFile)) {
         $configContent = file_get_contents($configFile);
-        // Remplace "url_rewriting" => false par "url_rewriting" => true
-        $configContent = preg_replace(
-            '/"url_rewriting"\s*=>\s*false/i',
-            '"url_rewriting" => true',
+        $isConfigured = preg_match(
+            '/"url_rewriting"\s*=>\s*true/i',
             $configContent
         );
-        file_put_contents($configFile, $configContent);
-        echo styleText(
-            "✅ Configuration mise à jour : réécriture d'URL activée dans _config.php",
-            "green"
-        ) . $newline;
+
+        echo "Réécriture d'URL activée dans la config ? ";
+        if ($isConfigured) {
+            echo styleText("✅ Oui", "green") . $newline;
+        } else {
+            echo styleText("⚠️ Non", "yellow") . $newline;
+
+            if (is_writable($configFile)) {
+                // Remplace "url_rewriting" => false par "url_rewriting" => true
+                $configContent = preg_replace(
+                    '/"url_rewriting"\s*=>\s*false/i',
+                    '"url_rewriting" => true',
+                    $configContent
+                );
+                file_put_contents($configFile, $configContent);
+                echo styleText(
+                    "✅ Configuration mise à jour : réécriture d'URL activée dans _config.php",
+                    "green"
+                ) . $newline;
+            } else {
+                echo styleText(
+                    "⚠️ Impossible de mettre à jour _config.php automatiquement",
+                    "yellow"
+                ) . $newline;
+            }
+        }
     } else {
         echo styleText(
             "⚠️ Impossible de mettre à jour _config.php automatiquement",
