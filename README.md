@@ -56,7 +56,7 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
    ```
    Ce script vérifiera :
    - La compatibilité de votre version de PHP
-   - Les extensions PHP requises 
+   - Les extensions PHP requises
    - Les droits d'accès au répertoire
    - La possibilité de créer/modifier la base de données
 
@@ -113,6 +113,7 @@ Le projet est basé sur une architecture PHP simple :
 - Utilisation de requêtes préparées pour toutes les interactions avec la base de données
 - Échappement des données utilisateur pour prévenir les attaques XSS
 - Pas de stockage d'informations personnelles
+- Suppression automatique de test_setup.php à la première utilisation réussie
 
 ## Licence
 
