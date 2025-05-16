@@ -167,10 +167,8 @@ if (extension_loaded("curl")) {
             ? "https"
             : "http";
     $baseUrl = $protocol . "://" . $host;
-    $pathParts = explode("/", $_SERVER["PHP_SELF"]);
-    array_pop($pathParts); // Retire test_setup.php
-    $basePath = implode("/", $pathParts);
-    $testUrl = $baseUrl . $basePath . "/" . $rewriteTestId;
+    // Pas besoin de reconstruire le chemin, on teste directement à la racine
+    $testUrl = $baseUrl . "/" . $rewriteTestId;
 
     echo "Test de réécriture : " . $testUrl . $newline;
 
@@ -234,6 +232,28 @@ if (extension_loaded("curl")) {
 echo "Réécriture d'URL fonctionnelle ? ";
 if ($urlRewriteTest === true) {
     echo styleText("✅ Oui", "green") . $newline;
+
+    // Mise à jour automatique du fichier _config.php pour activer la réécriture d'URL
+    $configFile = __DIR__ . "/_config.php";
+    if (file_exists($configFile) && is_writable($configFile)) {
+        $configContent = file_get_contents($configFile);
+        // Remplace "url_rewriting" => false par "url_rewriting" => true
+        $configContent = preg_replace(
+            '/"url_rewriting"\s*=>\s*false/i',
+            '"url_rewriting" => true',
+            $configContent
+        );
+        file_put_contents($configFile, $configContent);
+        echo styleText(
+            "✅ Configuration mise à jour : réécriture d'URL activée dans _config.php",
+            "green"
+        ) . $newline;
+    } else {
+        echo styleText(
+            "⚠️ Impossible de mettre à jour _config.php automatiquement",
+            "yellow"
+        ) . $newline;
+    }
 } elseif ($urlRewriteTest === false) {
     echo styleText("❌ Non", "yellow") . $newline;
 
@@ -527,7 +547,7 @@ if (empty($problems) && empty($warnings)) {
 echo $newline . "📋 Détails de la configuration PHP" . $newline;
 echo "-------------------------------$newline";
 echo "<details><summary>" .
-    styleText("Cliquez pour afficher les paramètres PHP détaillés", "yellow") .
+    "Cliquez pour afficher les paramètres PHP détaillés" .
     "</summary><pre>";
 phpinfo();
 echo "</pre></details>";

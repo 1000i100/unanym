@@ -51,9 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         null, // contestation_end
     ]);
     
-    // Supprime test_setup.php s'il existe (pour des raisons de sécurité en production)
-    if (file_exists(__DIR__ . "/test_setup.php")) {
-        @unlink(__DIR__ . "/test_setup.php");
+    // Supprime setup.php s'il existe (pour des raisons de sécurité en production)
+    if (file_exists(__DIR__ . "/setup.php")) {
+        @unlink(__DIR__ . "/setup.php");
     }
 
     header("Location: " . get_vote_url($id));
