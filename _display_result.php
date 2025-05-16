@@ -137,7 +137,7 @@ if ($vote["status"] === "open") {
 } else {
     $og_description = "Système de vote unanime ou veto - Unanym";
 }
-$data["og_description"] = htmlspecialchars($og_description);
+$data["og_description"] = remove_html_entities(htmlspecialchars($og_description));
 
 // Chargement du template
 $template = file_get_contents(__DIR__ . "/_template.html");

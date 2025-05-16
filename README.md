@@ -130,3 +130,15 @@ Pour contribuer au projet :
 ## Contact
 
 Pour toute question ou suggestion, n'hésitez pas à [ouvrir une issue](https://github.com/1000i100/unanym/issues) sur le dépôt GitHub.
+
+## Crédits
+
+Auteur humain :
+- [1000i100](https://github.com/1000i100)
+
+Assistant IA :
+- [Qwen3](https://huggingface.co/Qwen/Qwen3-235B-A22B)
+- [Claude 3.7](https://claude.ai/)
+
+IDE :
+- [Zed](https://zed.dev/)

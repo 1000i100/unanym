@@ -104,6 +104,17 @@ define("VOTE_SCHEMA", [
     "contestation_end" => "DATETIME",
 ]);
 
+/**
+ * Remplace les entités HTML par des espaces
+ * 
+ * @param string $text Le texte contenant des entités HTML
+ * @return string Le texte avec les entités HTML remplacées par des espaces
+ */
+function remove_html_entities($text)
+{
+    return preg_replace('/&[^;]+;/', ' ', $text);
+}
+
 // Générateur dynamique de requête CREATE TABLE
 function generate_create_table_sql($table = "votes")
 {

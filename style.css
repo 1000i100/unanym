@@ -155,6 +155,28 @@ select {
     content: "🚨"; /* 🚫 */
 }
 
+/* Liens vers le code source */
+.source-links {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8em;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    text-align: right;
+}
+.source-links:hover {
+    opacity: 1;
+}
+.source-links a {
+    color: rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+}
+.source-links a:hover {
+    text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {

@@ -1,3 +1,41 @@
+# [GNU Affero General Public License](https://choosealicense.com/licenses/agpl-3.0/)
+
+## Resumé informatif (sans valeur légale)
+
+Le droit d'utiliser le logiciel protégé par la plus complète des licences libres est conditionné
+à la mise à disposition complète de son code source, avec ses dernières modifications, sous la même licence.
+Les projets plus vastes utilisant des éléments protégés par cette licence se retrouvent donc eux-même à hériter des conditions et protections de cette licence.
+Les crédits, mentions et termes de cette licence doivent être préservés.
+Les contributeurs donnent droit d'usage sur leurs brevets.
+Quand une version modifiée est utilisée pour proposer un service en ligne ou par réseau, le code source complet de la version modifiée doit être rendu disponible.
+
+### Permissions
+
+- **Distribution** : Ce logiciel peut être (re)distribué.
+- **Modification** : Ce logiciel peut être modifié.
+- **Usage commercial** : Ce logiciel et ses dérivés peuvent être utilisés commercialement.
+- **Usage des brevets** : Cette licence donne droit d'usage sur les brevets des contributeurs.
+- **Usage privé** : Ce logiciel peut être modifié et utilisé en interne / en privé.
+
+### Limitations
+
+- **Responsabilité** : Cette licence inclue une limitation de responsabilité.
+- **Marque** : Cette licence ne donne droit d'usage des noms et marques qu'en référence au logiciel.
+- **Garantie** : Cette licence explicite l'ABSENCE de garantie du logiciel.
+
+### Conditions
+
+- **Licence fournie** : Une copie de la licence et autres crédits, droits et modalités associés au projet doivent être inclus avec le logiciel.
+- **Transparence** : Les modifications du code doivent être documentées (note de changement lors de chaque publication).
+- **Code source** : Le code source doit être accessible dès que le logiciel est distibué.
+- **Usage réseau** : Les utilisateurs qui interagissent avec le logiciel par réseau ont droit à une copie du code source.
+- **Même licence** : Les modifications doivent être publiées sous la même licence à la distribution du logiciel. Dans certains cas des licences compatibles peuvent être utilisées.
+
+-------------
+
+## Texte de la licence (à valeur légale)
+
+```
                     GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
@@ -659,3 +697,4 @@ specific requirements.
 if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
+```
