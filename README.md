@@ -17,6 +17,7 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
 - Partage facile par URL
 - Périodes de contestation configurables
 - Option pour masquer les résultats pendant la période de contestation
+- Balises Open Graph pour un meilleur affichage des liens partagés sur forum ou réseaux sociaux
 
 ## [Demo en ligne](https://unanym.1000i100.fr/)
 
@@ -26,7 +27,7 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
 
 - Serveur web avec PHP 8.0+
 - SQLite 3
-- Extension PHP pour SQLite
+- Extension PHP pour SQLite (pdo_sqlite)
 - Extension PHP intl (pour le formatage des dates)
 - Extension PHP BCMath (pour la génération des identifiants Base58)
 
@@ -49,12 +50,38 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
    https://unanym.votre-domaine.com/
    ```
 
-4. La base de données sera créée automatiquement lors de la première utilisation.
+4. Vérifiez votre installation en exécutant le script de test :
+   ```
+   php test_setup.php
+   ```
+   Ce script vérifiera :
+   - La compatibilité de votre version de PHP
+   - Les extensions PHP requises 
+   - Les droits d'accès au répertoire
+   - La possibilité de créer/modifier la base de données
+
+5. La base de données sera créée automatiquement lors de la première utilisation.
 
 ### Configuration pour serveur Apache ou NGINX
 
 Un fichier `.htaccess` est inclus pour la configuration d'Apache. Si vous utilisez NGINX, consultez le fichier `_nginx_vhost_conf_example.conf`.
 
+## Utilisation
+
+1. Sur la page d'accueil, cliquez sur "Créer un Vote"
+2. Configurez votre vote :
+   - Donnez un titre significatif
+   - Définissez l'option nécessitant l'unanimité
+   - Définissez l'option véto (adoptée au moindre vote)
+   - Indiquez le nombre total de votants attendus
+   - Configurez la période de contestation (de 5 minutes à "toujours")
+   - Choisissez si les résultats sont visibles pendant la contestation
+3. Partagez l'URL générée avec tous les participants
+4. Les participants votent de manière anonyme
+5. Une fois tous les votes reçus :
+   - Si tous les votes sont unanimes, le choix unanime est adopté
+   - Si au moins un vote est contre, le choix véto est adopté
+6. Pendant la période de contestation, un participant qui n'a pas pu voter peut contester le résultat, ce qui crée automatiquement un nouveau vote
 
 ## Cas d'usage
 
@@ -78,6 +105,7 @@ Le projet est basé sur une architecture PHP simple :
 - Base de données SQLite pour le stockage des données
 - Gestion dynamique des états de vote (ouvert, fermé, contesté)
 - Calcul précis des périodes de contestation en UTC
+- Script de vérification `test_setup.php` pour diagnostiquer les problèmes d'installation
 
 ## Sécurité
 
