@@ -7,7 +7,7 @@ include_once "_lib.php";
 include_once "_db_connect.php";
 
 // S'assurer que le fuseau horaire par défaut est UTC pour toutes les opérations de date
-date_default_timezone_set('UTC');
+date_default_timezone_set("UTC");
 
 $id = $_GET["id"] ?? "";
 $stmt = $pdo->prepare("SELECT * FROM votes WHERE id = ?");
@@ -32,6 +32,11 @@ $data = [
     "show_results_immediately" => $vote["show_results_immediately"],
     "veto_received" => $vote["veto_received"] ? 1 : 0,
     "id" => $id,
+    // Données pour Open Graph
+    "current_url" =>
+        (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on"
+            ? "https"
+            : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
 ];
 
 // Calcul des états de contestation
@@ -95,7 +100,6 @@ if ($vote["contestation_duration"] === "always") {
     $data["contestation_end_human"] = "";
 }
 
-
 // Déterminer si la contestation est encore possible
 $can_contest = false;
 if ($vote["status"] === "closed" && $vote["contestation_duration"] !== "none") {
@@ -113,6 +117,27 @@ $data["can_contest"] = $can_contest ? "1" : "0";
 $show_results = $vote["show_results_immediately"] || !$can_contest;
 $data["show_results"] = $show_results ? "1" : "0";
 
+// Description pour Open Graph
+if ($vote["status"] === "open") {
+    $og_description =
+        "Choix proposés : 1️⃣ " .
+        $data["choice_unanimous"] .
+        " ⚡️ OU ⚡️ 2️⃣ " .
+        $data["choice_veto"];
+} elseif ($vote["status"] === "closed" && !$show_results) {
+    $og_description =
+        "Ce vote est clos. Le résultat sera visible à la fin du délai de contestation.";
+} elseif ($vote["status"] === "closed" && $show_results) {
+    $og_description = $vote["veto_received"]
+        ? "Véto reçu : " . $data["choice_veto"]
+        : "Unanimité atteinte : " . $data["choice_unanimous"];
+} elseif ($vote["status"] === "contested") {
+    $og_description =
+        "Ce vote est nul. Un nouveau le remplace. Cliquez pour y accéder.";
+} else {
+    $og_description = "Système de vote unanime ou veto - Unanym";
+}
+$data["og_description"] = htmlspecialchars($og_description);
 
 // Chargement du template
 $template = file_get_contents(__DIR__ . "/_template.html");
@@ -156,6 +181,14 @@ foreach ($xpath->query("//*[@data-replace-title]") as $element) {
     $key = $element->getAttribute("data-replace-title");
     if (isset($data[$key])) {
         $element->setAttribute("title", $data[$key]);
+    }
+}
+
+// Gestion du contenu des meta tags (pour Open Graph)
+foreach ($xpath->query("//*[@data-replace-content]") as $element) {
+    $key = $element->getAttribute("data-replace-content");
+    if (isset($data[$key])) {
+        $element->setAttribute("content", $data[$key]);
     }
 }
 
