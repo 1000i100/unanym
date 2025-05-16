@@ -1,4 +1,6 @@
-# Unanym - Système de Vote Anonyme à l'Unanimité
+![Logo Unanym](favicon.svg)
+
+# [Unanym - Système de Vote Anonyme à l'Unanimité](https://unanym.1000i100.fr/)
 
 Unanym est une application web simple qui permet de créer et mener des votes à l'unanimité. L'application ne nécessite aucune inscription et conserve l'anonymat des participants.
 
@@ -18,8 +20,6 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
 - Périodes de contestation configurables
 - Option pour masquer les résultats pendant la période de contestation
 - Balises Open Graph pour un meilleur affichage des liens partagés sur forum ou réseaux sociaux
-
-## [Demo en ligne](https://unanym.1000i100.fr/)
 
 ## Installation
 
