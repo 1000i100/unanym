@@ -5,15 +5,19 @@ body {
     padding: 0;
     background: #f4f4f4;
     color: #333;
+    font-size: 16px;
+    text-size-adjust: 100%;
 }
 
 .container {
     max-width: 600px;
-    margin: 2em auto;
+    margin: 1.5em auto;
     padding: 1em;
     background: white;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 h1,
@@ -102,14 +106,18 @@ select {
 }
 
 /* Classes de base pour les résultats */
-.result h2 {
+.result h2,
+.share h2 {
     padding: 2em;
     border-radius: 8px;
 }
-.result .details {
-    font-size: 0.8em;
+.result .details,
+.share .details {
+    font-size: 0.9em;
+    word-break: break-all;
 }
-.result h2 .title {
+.result h2 .title,
+.share h2 .title {
     padding-left: 2em;
     padding-bottom: 1em;
     margin: auto;
@@ -117,7 +125,8 @@ select {
     display: inline-block;
 }
 
-.result .title::before {
+.result .title::before,
+.url .title::before {
     position: absolute;
     left: 0;
     top: -0.2em;
@@ -140,11 +149,69 @@ select {
     content: "❗"; /* ❌ */
 }
 
-.waiting {
+.waiting,
+.url {
     background: #e3f2fd; /* Bleu pâle */
+}
+.js .url {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.js .url:hover {
+    background: #bbdefb; /* Bleu un peu plus foncé au survol */
+}
+.js .url:active {
+    background: #90caf9; /* Bleu encore plus foncé au clic */
+}
+.url .details {
+    text-decoration: underline;
+    position: relative;
+    word-break: break-all;
+    line-height: 1.4;
 }
 .waiting .title::before {
     content: "🕒"; /*⏳⏱🕒*/
+}
+.url .title::before {
+    content: "📋"; /*
+    - 📋 (Presse-papiers)
+    - 📎 (Trombone)
+    - 🔗 (Lien)
+    - 📝 (Mémo) */
+}
+
+/* Style pour le message de copie */
+.url .details::after {
+    content: "URL copiée !";
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+}
+.url .details.copied::after {
+    opacity: 1;
+    animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0%,
+    100% {
+        opacity: 0;
+    }
+    20%,
+    80% {
+        opacity: 1;
+    }
 }
 
 .contested {
@@ -165,6 +232,11 @@ select {
     transition: opacity 0.2s;
     white-space: nowrap;
     text-align: right;
+    max-width: 90%;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 4px;
 }
 .source-links:hover {
     opacity: 1;
@@ -179,12 +251,59 @@ select {
 
 /* Responsive */
 @media (max-width: 600px) {
+    html {
+        font-size: 16px;
+    }
+    body {
+        font-size: 16px;
+    }
     .container {
-        margin: 1em;
-        padding: 0.5em;
+        margin: 0.8em;
+        padding: 0.8em;
+        width: calc(100% - 1.6em);
+        box-sizing: border-box;
+    }
+    h1 {
+        font-size: 1.6em;
+        margin-top: 0.8em;
+        margin-bottom: 0.8em;
+    }
+    h2 {
+        font-size: 1.3em;
     }
     .radio-button,
     button {
-        font-size: 0.9em;
+        font-size: 1em;
+        padding: 1.2em 0.8em;
+    }
+    .btn {
+        font-size: 1em;
+        padding: 1.2em 0.8em;
+    }
+    .result h2,
+    .share h2 {
+        padding: 1.2em;
+    }
+    .result .details,
+    .share .details {
+        font-size: 1em;
+    }
+    .description {
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px; /* Prevent iOS zoom on focus */
+        padding: 0.8em;
+    }
+    .source-links {
+        font-size: 0.7em;
+        position: static;
+        margin-top: 2em;
+        text-align: center;
+        padding: 1em 0;
     }
 }
