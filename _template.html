@@ -2,7 +2,10 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+        />
         <title data-replace="title">Unanym</title>
         <link rel="icon" href="favicon.svg" type="image/svg+xml" />
         <link rel="stylesheet" href="style.css" />
@@ -34,6 +37,9 @@
                     <div class="title">Lien à partager aux votants :</div>
                     <div data-replace="vote_link" class="details"></div>
                 </h2>
+                <a class="btn" data-replace-href="vote_link" href=""
+                    >Aller directement au vote</a
+                >
                 <script>
                     // Fonction pour copier l'URL depuis .details dans le presse-papier quand h2.url est cliqué
                     document.addEventListener("DOMContentLoaded", () => {

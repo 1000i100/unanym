@@ -24,7 +24,7 @@ $data = [
     "title" => htmlspecialchars($vote["title"]),
     "votes_received" => $vote["votes_received"],
     "total_voters" => $vote["total_voters"],
-    "status" => $vote["status"],
+    "status" => $GLOBALS["share"] ? "share" : $vote["status"],
     "choice_unanimous" => htmlspecialchars($vote["choice_unanimous"]),
     "choice_veto" => htmlspecialchars($vote["choice_veto"]),
     "new_vote_id" => $vote["new_vote_id"] ?: "",
@@ -32,6 +32,7 @@ $data = [
     "show_results_immediately" => $vote["show_results_immediately"],
     "veto_received" => $vote["veto_received"] ? 1 : 0,
     "id" => $id,
+    "vote_link" => get_vote_url($id),
     // Données pour Open Graph
     "current_url" =>
         (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on"
@@ -118,7 +119,10 @@ $show_results = $vote["show_results_immediately"] || !$can_contest;
 $data["show_results"] = $show_results ? "1" : "0";
 
 // Description pour Open Graph
-if ($vote["status"] === "open") {
+if ($GLOBALS["share"]) {
+    $og_description =
+        "Partagez ce lien avec les votants pour qu'ils puissent participer au vote.";
+} elseif ($vote["status"] === "open") {
     $og_description =
         "Choix proposés : 1️⃣ " .
         $data["choice_unanimous"] .
@@ -137,7 +141,9 @@ if ($vote["status"] === "open") {
 } else {
     $og_description = "Système de vote unanime ou veto - Unanym";
 }
-$data["og_description"] = remove_html_entities(htmlspecialchars($og_description));
+$data["og_description"] = remove_html_entities(
+    htmlspecialchars($og_description)
+);
 
 // Chargement du template
 $template = file_get_contents(__DIR__ . "/_template.html");

@@ -50,12 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         null, // closed_at
         null, // contestation_end
     ]);
-    
+
     // Supprime setup.php s'il existe (pour des raisons de sécurité en production)
     if (file_exists(__DIR__ . "/setup.php")) {
         @unlink(__DIR__ . "/setup.php");
     }
 
-    header("Location: " . get_vote_url($id));
+    // Appeler directement _display_result.php au lieu de faire une redirection
+    // Définir une variable globale pour indiquer l'affichage de l'écran de partage
+    $GLOBALS["share"] = true;
+    $_GET["id"] = $id;
+    include "_display_result.php";
     exit();
 }
