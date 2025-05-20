@@ -56,10 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         @unlink(__DIR__ . "/setup.php");
     }
 
-    // Appeler directement _display_result.php au lieu de faire une redirection
+    // Appeler directement _process_template.php au lieu de faire une redirection
     // Définir une variable globale pour indiquer l'affichage de l'écran de partage
     $GLOBALS["share"] = true;
     $_GET["id"] = $id;
-    include "_display_result.php";
+    include "_process_template.php";
     exit();
 }

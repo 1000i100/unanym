@@ -19,7 +19,7 @@ switch ($action) {
         include "_create_vote.php";
         break;
     case "display":
-        include "_display_result.php";
+        include "_process_template.php";
         break;
     default:
         header("Location: ./");

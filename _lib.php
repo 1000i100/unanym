@@ -5,20 +5,29 @@
 include_once "_config.php";
 
 /**
- * Génère une URL pour un vote basée sur la configuration de réécriture d'URL
+ * Génère une URL complète pour un vote basée sur la configuration de réécriture d'URL
  *
  * @param string $id L'identifiant du vote
- * @return string L'URL formatée
+ * @return string L'URL formatée complète (avec http/https)
  */
 function get_vote_url($id)
 {
     global $config;
-
+    
+    // Construction du préfixe de l'URL (domaine)
+    $protocol = isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http";
+    $domain = $_SERVER["HTTP_HOST"];
+    $base_path = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/");
+    
+    // Construction du chemin relatif selon la configuration
     if ($config["url_rewriting"]) {
-        return "./{$id}";
+        $relative_path = "/{$id}";
     } else {
-        return "./vote.php?id={$id}";
+        $relative_path = "/vote.php?id={$id}";
     }
+    
+    // Assemblage de l'URL complète
+    return "{$protocol}://{$domain}{$base_path}{$relative_path}";
 }
 // Fonction Base58 (nécessite bcmath)
 function base58_encode($input)
