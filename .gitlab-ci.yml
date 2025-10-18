@@ -4,17 +4,15 @@ stages:
 deploy_to_server:
   image: 1000i100/docker-ci-cd-publish:latest
   stage: deploy
-  tags:
-    - docker-runner
   before_script:
-    - apk add --no-cache openssh sshpass rsync
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+    - >-
+      [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >
+      ~/.ssh/config
   script:
-    - cd og-images && ./convert.sh && cd ..
-    - rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+    - rsync -avz -e "ssh -p $SSH_PORT" \
       --exclude='.git*' \
       --exclude='*.yml' \
       ./ gammanu@gamma.nu:/home/gammanu/unanym/

@@ -35,8 +35,10 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
 
 1. Clonez ce dépôt dans votre serveur web :
    ```
-   git clone https://github.com/1000i100/unanym.git
+   git clone https://framagit.org/1crea/unanym.git
    ```
+
+   Miroir GitHub : `https://github.com/1000i100/unanym`
 
 2. Assurez-vous que le répertoire est accessible en lecture et écriture par le serveur web :
    ```
@@ -150,7 +152,7 @@ Pour contribuer au projet :
 
 ## Contact
 
-Pour toute question ou suggestion, n'hésitez pas à [ouvrir une issue](https://github.com/1000i100/unanym/issues) sur le dépôt GitHub.
+Pour toute question ou suggestion, n'hésitez pas à [ouvrir une issue](https://framagit.org/1crea/unanym/-/issues) sur FramaGit.
 
 ## Crédits
 
