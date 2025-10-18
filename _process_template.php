@@ -145,6 +145,28 @@ $data["og_description"] = remove_html_entities(
     htmlspecialchars($og_description)
 );
 
+// Image pour Open Graph basée sur le statut
+if ($GLOBALS["share"] || $vote["status"] === "open") {
+    $og_image = "/og-images/og-vote-open.png";
+    $og_image_square = "/og-images/og-vote-open-square.png";
+} elseif ($vote["status"] === "closed" && $show_results) {
+    if ($vote["veto_received"]) {
+        $og_image = "/og-images/og-vote-veto.png";
+        $og_image_square = "/og-images/og-vote-veto-square.png";
+    } else {
+        $og_image = "/og-images/og-vote-unanimous.png";
+        $og_image_square = "/og-images/og-vote-unanimous-square.png";
+    }
+} elseif ($vote["status"] === "contested") {
+    $og_image = "/og-images/og-vote-contested.png";
+    $og_image_square = "/og-images/og-vote-contested-square.png";
+} else {
+    $og_image = "/og-images/og-vote-open.png";
+    $og_image_square = "/og-images/og-vote-open-square.png";
+}
+$data["og_image"] = $og_image;
+$data["og_image_square"] = $og_image_square;
+
 // Chargement du template
 $template = file_get_contents(__DIR__ . "/_template.html");
 

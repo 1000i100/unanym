@@ -1,0 +1,26 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond bleu clair -->
+  <rect width="1200" height="1200" fill="#e3f2fd"/>
+
+  <!-- Logo urne (en haut) -->
+  <g transform="translate(500, 150) scale(1)">
+    <g stroke="#2980b9" stroke-width="4.8396">
+      <path d="m3.114 200 0.093963-44h193.58l0.0204 44" fill="#58aae4"/>
+      <path d="m2.4212 200-0.00127-41.606m195.16-0.0079-2.9e-4 41.614" fill="#3498db"/>
+      <path d="m27.406 71.307h145.19l24.198 84.693h-193.58z" fill="#3498db"/>
+    </g>
+    <rect x="51.604" y="95.505" width="96.792" height="12.099" fill="#ecf0f1" stroke-width="1.2099"/>
+    <g transform="matrix(-1.3646 -2.3636 2.3636 -1.3646 31.827 432.6)">
+      <g transform="rotate(45,110,95)" stroke="#c0392b" stroke-width="2">
+        <rect transform="rotate(15)" x="110.84" y="53.293" width="30.823" height="20" fill="#fff"/>
+        <path d="m93.27 80.164 11.734 15.752 18.038-7.7743" fill="none"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Emoji horloge -->
+  <text x="600" y="750" font-family="Arial, sans-serif" font-size="200" text-anchor="middle">🕒</text>
+
+  <!-- Texte -->
+  <text x="600" y="980" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="#2c3e50" text-anchor="middle">Vote en cours</text>
+</svg>

@@ -19,7 +19,7 @@ Chaque vote peut également être contesté, ce qui crée automatiquement un nou
 - Partage facile par URL
 - Périodes de contestation configurables
 - Option pour masquer les résultats pendant la période de contestation
-- Balises Open Graph pour un meilleur affichage des liens partagés sur forum ou réseaux sociaux
+- Images et balises Open Graph pour un meilleur affichage des liens partagés sur forum ou réseaux sociaux
 
 ## Installation
 
@@ -106,6 +106,27 @@ Le projet est basé sur une architecture PHP simple :
 - Gestion dynamique des états de vote (ouvert, fermé, contesté)
 - Calcul précis des périodes de contestation en UTC
 - Script de vérification `setup.php` pour diagnostiquer les problèmes d'installation
+- Images Open Graph générées à partir de sources SVG (`og-images/`)
+
+### Régénération des images Open Graph
+
+Si vous modifiez les images SVG dans le dossier `og-images/`, vous pouvez les reconvertir en PNG optimisés avec :
+
+```bash
+cd og-images
+./convert.sh
+```
+
+Ce script :
+- Détecte automatiquement les outils de conversion disponibles (`rsvg-convert`, `inkscape`, ou `imagemagick`)
+- Convertit tous les fichiers SVG en PNG au format approprié (1200×630 pour rectangulaire, 1200×1200 pour carré)
+- Optimise les PNG avec `optipng`, `pngcrush` et/ou `pngquant` si disponibles
+- Affiche des instructions d'installation pour les outils manquants
+
+**Outils recommandés (Debian/Ubuntu) :**
+```bash
+sudo apt install librsvg2-bin optipng pngcrush
+```
 
 ## Sécurité
 
@@ -136,9 +157,10 @@ Pour toute question ou suggestion, n'hésitez pas à [ouvrir une issue](https://
 Auteur humain :
 - [1000i100](https://github.com/1000i100)
 
-Assistant IA :
+Assistants IA :
 - [Qwen3](https://huggingface.co/Qwen/Qwen3-235B-A22B)
-- [Claude 3.7](https://claude.ai/)
+- [Claude 3.7 Sonnet](https://claude.ai/)
+- [Claude Code 4.5 Sonnet](https://claude.ai/claude-code)
 
 IDE :
 - [Zed](https://zed.dev/)

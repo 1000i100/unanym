@@ -1,0 +1,32 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond dégradé bleu -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bgGrad)"/>
+
+  <!-- Logo urne (centré) -->
+  <g transform="translate(400, 350) scale(2)">
+    <g stroke="#fff" stroke-width="4.8396">
+      <path d="m3.114 200 0.093963-44h193.58l0.0204 44" fill="#ecf0f1"/>
+      <path d="m2.4212 200-0.00127-41.606m195.16-0.0079-2.9e-4 41.614" fill="#fff"/>
+      <path d="m27.406 71.307h145.19l24.198 84.693h-193.58z" fill="#fff"/>
+    </g>
+    <rect x="51.604" y="95.505" width="96.792" height="12.099" fill="#3498db" stroke-width="1.2099"/>
+    <g transform="matrix(-1.3646 -2.3636 2.3636 -1.3646 31.827 432.6)">
+      <g transform="rotate(45,110,95)" stroke="#e74c3c" stroke-width="2">
+        <rect transform="rotate(15)" x="110.84" y="53.293" width="30.823" height="20" fill="#fff"/>
+        <path d="m93.27 80.164 11.734 15.752 18.038-7.7743" fill="none"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Titre -->
+  <text x="600" y="900" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#fff" text-anchor="middle">Unanym</text>
+
+  <!-- Sous-titre -->
+  <text x="600" y="980" font-family="Arial, sans-serif" font-size="40" fill="#ecf0f1" text-anchor="middle">Vote anonyme à l'unanimité</text>
+</svg>
