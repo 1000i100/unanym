@@ -2,7 +2,7 @@ stages:
   - deploy
 
 deploy_to_server:
-  image: alpine:latest
+  image: 1000i100/docker-ci-cd-publish:latest
   stage: deploy
   tags:
     - docker-runner
@@ -13,6 +13,7 @@ deploy_to_server:
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
   script:
+    - cd og-images && ./convert.sh && cd ..
     - rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
       --exclude='.git*' \
       --exclude='*.yml' \
