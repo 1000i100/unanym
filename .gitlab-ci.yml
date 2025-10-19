@@ -19,7 +19,4 @@ deploy_to_server:
   script:
     - ls -la
     - ssh -p $SSH_PORT $SSH_URI "ls -la $PROJECT_PATH"
-    - rsync -avz -e "ssh -p $SSH_PORT" \
-      --exclude='.git*' \
-      --exclude='*.yml' \
-      ./ $SSH_URI:$PROJECT_PATH
+    - rsync -avz -e "ssh -p $SSH_PORT" ./ $SSH_URI:$PROJECT_PATH
